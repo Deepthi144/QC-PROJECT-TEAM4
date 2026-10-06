@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+const API_URL = "https://qc-project-team4.onrender.com";
+
 function formatBytes(value) {
   const bytes = Number(value);
 
@@ -13,9 +15,9 @@ function formatBytes(value) {
   const units = ["B", "KB", "MB", "GB"];
   const index = Math.floor(Math.log(bytes) / Math.log(1024));
 
-  return `${(bytes / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 1)} ${
-    units[index]
-  }`;
+  return `${(bytes / Math.pow(1024, index)).toFixed(
+    index === 0 ? 0 : 1
+  )} ${units[index]}`;
 }
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
 
   useEffect(() => {
     document.body.classList.toggle("light-mode", !darkMode);
+
     localStorage.setItem(
       "quantumcrypt-theme",
       darkMode ? "dark" : "light"
@@ -73,7 +76,7 @@ function App() {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/encrypt", {
+      const response = await fetch(`${API_URL}/encrypt`, {
         method: "POST",
         body: formData,
       });
@@ -120,6 +123,7 @@ function App() {
       }
 
       const byteArray = new Uint8Array(byteNumbers);
+
       const blob = new Blob([byteArray], {
         type: "application/octet-stream",
       });
@@ -145,7 +149,10 @@ function App() {
     if (!encryptResult?.encrypted_pixel_image) return;
 
     try {
-      const byteCharacters = atob(encryptResult.encrypted_pixel_image);
+      const byteCharacters = atob(
+        encryptResult.encrypted_pixel_image
+      );
+
       const byteNumbers = new Array(byteCharacters.length);
 
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -206,7 +213,7 @@ function App() {
     formData.append("key", decryptKey.trim());
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/decrypt", {
+      const response = await fetch(`${API_URL}/decrypt`, {
         method: "POST",
         body: formData,
       });
@@ -270,6 +277,7 @@ function App() {
 
   return (
     <div className="app">
+
       {/* NAVBAR */}
       <nav className="navbar">
         <div className="brand">
@@ -301,20 +309,29 @@ function App() {
             className="theme-toggle"
             onClick={() => setDarkMode((prev) => !prev)}
             aria-label="Toggle theme"
-            title={darkMode ? "Switch to bright mode" : "Switch to dark mode"}
+            title={
+              darkMode
+                ? "Switch to bright mode"
+                : "Switch to dark mode"
+            }
           >
             <span className="theme-icon">
               {darkMode ? "☀" : "☾"}
             </span>
-            <span>{darkMode ? "BRIGHT" : "DARK"}</span>
+
+            <span>
+              {darkMode ? "BRIGHT" : "DARK"}
+            </span>
           </button>
         </div>
       </nav>
 
       <main>
+
         {/* HERO */}
         <section className="hero">
           <div className="hero-copy">
+
             <div className="eyebrow">
               <span></span>
               QUANTUM-ASSISTED SECURITY
@@ -343,7 +360,7 @@ function App() {
 
               <div className="hero-note">
                 <span className="mini-lock">◈</span>
-                Local encrypted processing
+                Secure server-side processing
               </div>
             </div>
 
@@ -376,6 +393,7 @@ function App() {
                 <span className="console-label">
                   LIVE ENTROPY CHANNEL
                 </span>
+
                 <strong>QUANTUM CORE / 01</strong>
               </div>
 
@@ -435,9 +453,12 @@ function App() {
 
         {/* WORKFLOW */}
         <section className="workflow">
-          <div className="section-kicker">SECURE WORKFLOW</div>
+          <div className="section-kicker">
+            SECURE WORKFLOW
+          </div>
 
           <div className="workflow-line">
+
             <div className="workflow-step active">
               <span>01</span>
               <div>
@@ -475,13 +496,19 @@ function App() {
                 <small>SHA-256</small>
               </div>
             </div>
+
           </div>
         </section>
 
         {/* ENCRYPTION LAB */}
-        <section id="encryption-lab" className="lab-section">
+        <section
+          id="encryption-lab"
+          className="lab-section"
+        >
           <div className="section-heading">
-            <div className="section-number">01</div>
+            <div className="section-number">
+              01
+            </div>
 
             <div>
               <div className="section-kicker">
@@ -501,11 +528,18 @@ function App() {
           </div>
 
           <div className="lab-grid">
+
             {/* UPLOAD PANEL */}
             <div className="lab-panel upload-panel">
+
               <div className="panel-top">
-                <span className="panel-id">INPUT / IMG</span>
-                <span className="panel-status">READY</span>
+                <span className="panel-id">
+                  INPUT / IMG
+                </span>
+
+                <span className="panel-status">
+                  READY
+                </span>
               </div>
 
               <label className="image-upload">
@@ -529,7 +563,9 @@ function App() {
                   </div>
                 ) : (
                   <div className="upload-placeholder">
-                    <div className="upload-symbol">+</div>
+                    <div className="upload-symbol">
+                      +
+                    </div>
 
                     <strong>
                       SELECT IMAGE
@@ -548,16 +584,21 @@ function App() {
 
               {image && (
                 <div className="file-info">
-                  <div className="file-icon">IMG</div>
+                  <div className="file-icon">
+                    IMG
+                  </div>
 
                   <div className="file-details">
                     <strong>{image.name}</strong>
+
                     <span>
                       {formatBytes(image.size)} · READY FOR ENCRYPTION
                     </span>
                   </div>
 
-                  <div className="file-check">✓</div>
+                  <div className="file-check">
+                    ✓
+                  </div>
                 </div>
               )}
 
@@ -582,12 +623,15 @@ function App() {
 
             {/* SECURITY PANEL */}
             <div className="lab-panel security-panel">
+
               <div className="panel-top">
                 <span className="panel-id">
                   SECURITY / PROFILE
                 </span>
 
-                <span className="secure-mark">●</span>
+                <span className="secure-mark">
+                  ●
+                </span>
               </div>
 
               <div className="security-title">
@@ -596,11 +640,17 @@ function App() {
               </div>
 
               <div className="security-list">
+
                 <div className="security-row">
-                  <span className="security-index">A1</span>
+                  <span className="security-index">
+                    A1
+                  </span>
 
                   <div>
-                    <strong>Randomness Source</strong>
+                    <strong>
+                      Randomness Source
+                    </strong>
+
                     <small>
                       Quantum-generated random bits
                     </small>
@@ -610,10 +660,15 @@ function App() {
                 </div>
 
                 <div className="security-row">
-                  <span className="security-index">A2</span>
+                  <span className="security-index">
+                    A2
+                  </span>
 
                   <div>
-                    <strong>Encryption Mode</strong>
+                    <strong>
+                      Encryption Mode
+                    </strong>
+
                     <small>
                       Authenticated symmetric encryption
                     </small>
@@ -623,10 +678,15 @@ function App() {
                 </div>
 
                 <div className="security-row">
-                  <span className="security-index">A3</span>
+                  <span className="security-index">
+                    A3
+                  </span>
 
                   <div>
-                    <strong>Integrity Layer</strong>
+                    <strong>
+                      Integrity Layer
+                    </strong>
+
                     <small>
                       Cryptographic file verification
                     </small>
@@ -636,26 +696,34 @@ function App() {
                 </div>
 
                 <div className="security-row">
-                  <span className="security-index">A4</span>
+                  <span className="security-index">
+                    A4
+                  </span>
 
                   <div>
-                    <strong>Processing</strong>
+                    <strong>
+                      Processing
+                    </strong>
+
                     <small>
-                      Secure local application workflow
+                      Secure server-side application workflow
                     </small>
                   </div>
 
-                  <b>LOCAL</b>
+                  <b>SERVER</b>
                 </div>
+
               </div>
 
               <div className="security-warning">
                 <span>!</span>
+
                 <p>
                   Keep the generated encryption key private.
                   The key is required for successful decryption.
                 </p>
               </div>
+
             </div>
           </div>
         </section>
@@ -663,13 +731,16 @@ function App() {
         {/* ENCRYPTION RESULT */}
         {encryptResult && (
           <section className="result-section">
+
             <div className="result-banner">
               <div>
                 <span className="section-kicker">
                   OUTPUT / CIPHERTEXT
                 </span>
 
-                <h2>Encryption complete.</h2>
+                <h2>
+                  Encryption complete.
+                </h2>
 
                 <p>
                   Your image has been transformed into encrypted
@@ -685,6 +756,7 @@ function App() {
 
             {/* STATS */}
             <div className="result-stats">
+
               <div>
                 <span>RANDOM BITS</span>
                 <strong>256</strong>
@@ -706,14 +778,18 @@ function App() {
               <div>
                 <span>OUTPUT</span>
                 <strong>
-                  {formatBytes(encryptResult.encrypted_size)}
+                  {formatBytes(
+                    encryptResult.encrypted_size
+                  )}
                 </strong>
                 <small>CIPHERTEXT</small>
               </div>
+
             </div>
 
             {/* KEY */}
             <div className="key-section">
+
               <div className="key-header">
                 <div>
                   <span>SECRET MATERIAL</span>
@@ -726,11 +802,15 @@ function App() {
               </div>
 
               <div className="key-display">
-                <code>{encryptResult.key}</code>
+                <code>
+                  {encryptResult.key}
+                </code>
 
                 <button
                   onClick={copyKey}
-                  className={`copy-key-button ${copied ? "copied" : ""}`}
+                  className={`copy-key-button ${
+                    copied ? "copied" : ""
+                  }`}
                 >
                   {copied ? "✓ COPIED" : "COPY KEY"}
                   {!copied && <span>⧉</span>}
@@ -760,10 +840,13 @@ function App() {
             {/* PIXEL ANALYSIS */}
             {encryptResult.encrypted_pixel_image && (
               <div className="pixel-section">
+
                 <div className="pixel-header">
                   <div>
                     <span>VISUAL ANALYSIS</span>
-                    <strong>ENCRYPTED PIXEL MATRIX</strong>
+                    <strong>
+                      ENCRYPTED PIXEL MATRIX
+                    </strong>
                   </div>
 
                   <span className="pixel-tag">
@@ -772,6 +855,7 @@ function App() {
                 </div>
 
                 <div className="pixel-content">
+
                   <div className="pixel-image-frame">
                     <img
                       src={`data:image/png;base64,${encryptResult.encrypted_pixel_image}`}
@@ -780,6 +864,7 @@ function App() {
                   </div>
 
                   <div className="pixel-description">
+
                     <div className="analysis-number">
                       01
                     </div>
@@ -804,6 +889,7 @@ function App() {
                       DOWNLOAD PIXEL MATRIX
                       <span>↓</span>
                     </button>
+
                   </div>
                 </div>
               </div>
@@ -813,6 +899,7 @@ function App() {
             <div className="download-bar">
               <div>
                 <span>ENCRYPTED FILE</span>
+
                 <strong>
                   {image?.name || "encrypted_image"}.encrypted
                 </strong>
@@ -826,11 +913,13 @@ function App() {
                 <span>↓</span>
               </button>
             </div>
+
           </section>
         )}
 
         {/* DECRYPTION LAB */}
         <section className="lab-section decrypt-section">
+
           <div className="section-heading">
             <div className="section-number violet">
               02
@@ -854,8 +943,10 @@ function App() {
           </div>
 
           <div className="lab-grid decrypt-grid">
+
             {/* ENCRYPTED FILE */}
             <div className="lab-panel">
+
               <div className="panel-top">
                 <span className="panel-id">
                   INPUT / CIPHERTEXT
@@ -867,6 +958,7 @@ function App() {
               </div>
 
               <label className="encrypted-upload">
+
                 <input
                   type="file"
                   onChange={handleEncryptedFile}
@@ -883,10 +975,12 @@ function App() {
                 <span>
                   .ENCRYPTED FILE INPUT
                 </span>
+
               </label>
 
               {encryptedFile && (
                 <div className="selected-encrypted">
+
                   <div className="file-icon encrypted-icon">
                     ENC
                   </div>
@@ -904,12 +998,15 @@ function App() {
                   <div className="file-check violet-check">
                     ✓
                   </div>
+
                 </div>
               )}
+
             </div>
 
             {/* KEY INPUT */}
             <div className="lab-panel key-input-panel">
+
               <div className="panel-top">
                 <span className="panel-id">
                   AUTH / KEY
@@ -943,6 +1040,7 @@ function App() {
                   {decryptKey.length} CHARACTERS
                 </span>
               </div>
+
             </div>
           </div>
 
@@ -985,10 +1083,16 @@ function App() {
           {/* DECRYPTED RESULT */}
           {decryptedImage && (
             <div className="decrypted-result">
+
               <div className="decrypted-header">
                 <div>
-                  <span>OUTPUT / RESTORED IMAGE</span>
-                  <strong>Decryption successful</strong>
+                  <span>
+                    OUTPUT / RESTORED IMAGE
+                  </span>
+
+                  <strong>
+                    Decryption successful
+                  </strong>
                 </div>
 
                 <span className="restored-badge">
@@ -997,6 +1101,7 @@ function App() {
               </div>
 
               <div className="decrypted-content">
+
                 <div className="decrypted-image-frame">
                   <img
                     src={decryptedImage}
@@ -1005,6 +1110,7 @@ function App() {
                 </div>
 
                 <div className="decrypted-info">
+
                   <div className="restore-icon">
                     ✓
                   </div>
@@ -1027,17 +1133,23 @@ function App() {
                     DOWNLOAD RESTORED IMAGE
                     <span>↓</span>
                   </button>
+
                 </div>
+
               </div>
             </div>
           )}
+
         </section>
       </main>
 
       {/* FOOTER */}
       <footer className="footer">
+
         <div className="footer-brand">
-          <span className="footer-q">Q</span>
+          <span className="footer-q">
+            Q
+          </span>
 
           <div>
             <strong>QUANTUMCRYPT</strong>
@@ -1054,7 +1166,9 @@ function App() {
         <div className="footer-copy">
           SECURE VISUAL DATA · 2026
         </div>
+
       </footer>
+
     </div>
   );
 }
